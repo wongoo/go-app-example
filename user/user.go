@@ -1,4 +1,6 @@
-package domain
+package user
+
+const USER_COLLECTION = "user"
 
 type User struct {
 	Id   string `bson:"_id" json:"id"`

@@ -1,17 +1,14 @@
 package main
 
 import (
-	"github.com/wongoo/go-app-example/mongo"
-	"github.com/wongoo/go-app-example/domain"
-	"fmt"
+	"github.com/gin-gonic/gin"
+	"github.com/wongoo/go-app-example/api"
 )
 
 func main() {
-	user := domain.User{
-		Id:   "1",
-		Name: "wongoo",
-		Sex:  1,
-	}
-	mongo.InsertCollection("user", user)
-	fmt.Println("done")
+	router := gin.Default()
+
+	api.ApiRoute(router)
+
+	router.Run(":8082")
 }

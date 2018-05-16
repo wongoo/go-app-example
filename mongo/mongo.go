@@ -38,7 +38,7 @@ func GetMongoClient() *mgo.Session {
 }
 
 func InsertDbCollection(db string, collection string, doc interface{}) error {
-	fmt.Println("insert %s.%s", db ,collection)
+	fmt.Printf("insert %v.%v\n", db, collection)
 
 	session := GetMongoClient().Clone()
 	defer session.Close()
@@ -52,3 +52,24 @@ func InsertCollection(collection string, doc interface{}) error {
 	return InsertDbCollection(constants.MongoDbName, collection, doc)
 }
 
+func FindOne(collection string, id string, doc interface{}) (err error) {
+	session := GetMongoClient().Clone()
+	defer session.Close()
+
+	c := session.DB(constants.MongoDbName).C(collection)
+	query := c.FindId(id)
+	err = query.One(doc)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func DeleteOne(collection string, id string) error {
+	session := GetMongoClient().Clone()
+	defer session.Close()
+
+	c := session.DB(constants.MongoDbName).C(collection)
+	err := c.RemoveId(id)
+	return err
+}
